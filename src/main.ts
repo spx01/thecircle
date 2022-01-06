@@ -3,6 +3,7 @@ import { exit } from 'process';
 import { Client } from 'discordx';
 import { importx, dirname } from '@discordx/importer';
 import { Intents, Interaction } from 'discord.js';
+import Freemotes from './freemotes/freemotes.js';
 
 const cfg = (() => {
   try {
@@ -11,7 +12,6 @@ const cfg = (() => {
     console.error(`couldn't open bot config file: ${err}`);
     exit(1);
   }
-  return undefined;
 })();
 
 if (!cfg.token) {
@@ -26,10 +26,15 @@ const client = new Client({
     Intents.FLAGS.GUILD_WEBHOOKS,
     Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
   ],
-  // silent: false,
   // botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
-  botGuilds: ['914055768217624607'],
+  botGuilds: cfg.debug_guild
+    ? [cfg.debug_guild]
+    : [(client) => client.guilds.cache.map((guild) => guild.id)],
 });
+
+const freemotes = new Freemotes();
+
+export { freemotes, client };
 
 client.once('ready', async () => {
   await client.guilds.fetch();
@@ -38,6 +43,10 @@ client.once('ready', async () => {
   client.user?.setStatus('dnd');
   client.user?.setActivity('the world end', { type: 'WATCHING' });
   console.log(`Ready as ${client.user?.username}#${client.user?.discriminator}`);
+
+  client.guilds.cache.forEach((guild) => {
+    freemotes.updateEmojis(guild);
+  });
 });
 
 client.on('interactionCreate', (interaction: Interaction) => {

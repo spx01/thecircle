@@ -19,7 +19,12 @@
         "max-classes-per-file": "off",
         "import/extensions": "off",
         "lines-between-class-members": "off",
-        "no-console": "off"
+        "no-console": "off",
+        "no-shadow": "off",
+        "guard-for-in": "off",
+        "no-restricted-syntax": "off",
+        "consistent-return": "off",
+        "no-continue": "off"
     },
     "settings": {
         "import/parsers": {

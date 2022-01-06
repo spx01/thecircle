@@ -1,16 +1,21 @@
 import {
-  ArgsOf, Discord, On, Client,
+  ArgsOf, Client, Discord, On,
 } from 'discordx';
-import Freemotes from '../freemotes/freemotes.js';
-
-const freemotes = new Freemotes();
+import { freemotes } from '../main.js';
 
 /* eslint-disable */
 @Discord()
 export abstract class AppDiscord {
-  @On('messageCreate')
-  async onMessage([message]: ArgsOf<'messageCreate'>, client: Client) {
+  @On('guildCreate')
+  async guildCreate([guild]: ArgsOf<'guildCreate'>, client: Client) {
     /* eslint-enable */
-    await freemotes.handleMessage(message, client);
+    await freemotes.updateEmojis(guild);
+  }
+
+  /* eslint-disable */
+  @On('messageCreate')
+  async messageCreate([message]: ArgsOf<'messageCreate'>, client: Client) {
+    /* eslint-enable */
+    await freemotes.handleMessage(message);
   }
 }
