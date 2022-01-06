@@ -20,6 +20,20 @@ export abstract class AppDiscord {
   }
 
   /* eslint-disable */
+  @On('emojiCreate')
+  async emojiCreate([emoji]: ArgsOf<'emojiCreate'>, client: Client) {
+    /* eslint-enable */
+    await freemotes.updateEmojis(emoji.guild);
+  }
+
+  /* eslint-disable */
+  @On('emojiDelete')
+  async emojiDelete([emoji]: ArgsOf<'emojiDelete'>, client: Client) {
+    /* eslint-enable */
+    await freemotes.updateEmojis(emoji.guild);
+  }
+
+  /* eslint-disable */
   @On('messageCreate')
   async messageCreate([message]: ArgsOf<'messageCreate'>, client: Client) {
     /* eslint-enable */
