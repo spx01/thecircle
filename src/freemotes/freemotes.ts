@@ -91,10 +91,10 @@ class Freemotes {
     if (replaced === '') {
       return;
     }
+
     await m.delete();
-    const displayName = m.member?.displayName ?? m.author.username;
     await webhook.send({
-      username: displayName,
+      username: m.member?.displayName,
       avatarURL: m.author.avatarURL() ?? undefined,
       content: replaced,
     });
