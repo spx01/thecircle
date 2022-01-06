@@ -5,9 +5,9 @@ import { freemotes } from '../main.js';
 /* eslint-disable */
 @Discord()
 class FreemoteCommands {
-  @Slash('list')
+  @Slash('freemotes', { description: 'list available emojis' })
   async list(
-      interaction: CommandInteraction
+    interaction: CommandInteraction
   ) {
     /* eslint-enable */
     await interaction.deferReply();
