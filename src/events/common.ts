@@ -34,9 +34,23 @@ export abstract class AppDiscord {
   }
 
   /* eslint-disable */
+  @On('guildDelete')
+  async guildDelete([guild]: ArgsOf<'guildDelete'>, client: Client) {
+    /* eslint-disable */
+    freemotes.deleteFromGuild(guild);
+  }
+
+  /* eslint-disable */
   @On('messageCreate')
   async messageCreate([message]: ArgsOf<'messageCreate'>, client: Client) {
     /* eslint-enable */
     await freemotes.handleMessage(message);
+  }
+
+  /* eslint-disable */
+  @On('guildMemberAdd')
+  async guildMemberAdd([member]: ArgsOf<'guildMemberAdd'>, client: Client) {
+    /* eslint-enable */
+
   }
 }

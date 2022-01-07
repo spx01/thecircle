@@ -33,6 +33,10 @@ class Freemotes {
     });
   }
 
+  public async deleteFromGuild(guild: Guild) {
+    this.cachedEmojis.delete(guild.id);
+  }
+
   public getSimpleEmoji(name: string): SimpleEmoji | undefined {
     for (const emojis of this.cachedEmojis.values()) {
       for (const emoji of emojis.values()) {
