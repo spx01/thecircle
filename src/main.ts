@@ -4,6 +4,7 @@ import { Client } from 'discordx';
 import { importx, dirname } from '@discordx/importer';
 import { Intents, Interaction } from 'discord.js';
 import Freemotes from './freemotes/freemotes.js';
+import InviteSpy from './invitespy/invitespy.js';
 
 const cfg = (() => {
   try {
@@ -25,6 +26,7 @@ const client = new Client({
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_WEBHOOKS,
     Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
+    Intents.FLAGS.GUILD_MEMBERS,
   ],
   // botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
   botGuilds: cfg.debug_guild
@@ -33,8 +35,9 @@ const client = new Client({
 });
 
 const freemotes = new Freemotes();
+const inviteSpy = new InviteSpy();
 
-export { freemotes, client };
+export { client, freemotes, inviteSpy };
 
 client.once('ready', async () => {
   await client.guilds.fetch();
