@@ -27,6 +27,7 @@ const client = new Client({
     Intents.FLAGS.GUILD_WEBHOOKS,
     Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
     Intents.FLAGS.GUILD_MEMBERS,
+    Intents.FLAGS.GUILD_INVITES,
   ],
   // botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
   botGuilds: cfg.debug_guild
