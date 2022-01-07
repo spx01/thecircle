@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && node out/main.js",
-    "lint": "eslint src --ext .ts"
+    "lint": "eslint src --ext .ts",
+    "format": "prettier 'src/**/*.ts' --write"
   },
   "author": "spx01",
   "license": "MIT",
@@ -23,6 +24,7 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
+    "prettier": "^2.5.1",
     "typescript": "^4.5.4"
   },
   "dependencies": {

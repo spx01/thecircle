@@ -6,9 +6,7 @@ import { freemotes } from '../main.js';
 @Discord()
 class FreemoteCommands {
   @Slash('freemotes', { description: 'list available emojis' })
-  async list(
-    interaction: CommandInteraction
-  ) {
+  async list(interaction: CommandInteraction) {
     /* eslint-enable */
     const { guild } = interaction;
     const everyone = guild?.roles.everyone;

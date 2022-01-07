@@ -1,6 +1,4 @@
-import {
-  ArgsOf, Client, Discord, On,
-} from 'discordx';
+import { ArgsOf, Client, Discord, On } from 'discordx';
 import { freemotes } from '../main.js';
 
 /* eslint-disable */
@@ -14,7 +12,10 @@ export abstract class AppDiscord {
 
   /* eslint-disable */
   @On('emojiUpdate')
-  async emojiUpdate([oldEmoji, newEmoji]: ArgsOf<'emojiUpdate'>, client: Client) {
+  async emojiUpdate(
+    [oldEmoji, newEmoji]: ArgsOf<'emojiUpdate'>,
+    client: Client
+  ) {
     /* eslint-enable */
     await freemotes.updateEmojis(oldEmoji.guild);
   }
@@ -51,6 +52,5 @@ export abstract class AppDiscord {
   @On('guildMemberAdd')
   async guildMemberAdd([member]: ArgsOf<'guildMemberAdd'>, client: Client) {
     /* eslint-enable */
-
   }
 }

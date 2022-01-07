@@ -42,7 +42,9 @@ client.once('ready', async () => {
   await client.initApplicationPermissions();
   client.user?.setStatus('dnd');
   client.user?.setActivity('the world end', { type: 'WATCHING' });
-  console.log(`Ready as ${client.user?.username}#${client.user?.discriminator}`);
+  console.log(
+    `Ready as ${client.user?.username}#${client.user?.discriminator}`,
+  );
 
   client.guilds.cache.forEach((guild) => {
     freemotes.updateEmojis(guild);

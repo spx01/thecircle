@@ -1,5 +1,9 @@
 import {
-  Emoji, Message, BaseGuildTextChannel, GuildChannelResolvable, Guild,
+  Emoji,
+  Message,
+  BaseGuildTextChannel,
+  GuildChannelResolvable,
+  Guild,
 } from 'discord.js';
 import { client } from '../main.js';
 import findOrCreateWebhook from '../util.js';
@@ -67,13 +71,16 @@ class Freemotes {
     if (m.content.includes('`')) {
       return undefined;
     }
-    const replaced = m.content.replaceAll(/\{([A-Za-z0-9_]+)\}/g, (match, p1) => {
-      const emoji = this.getSimpleEmoji(p1);
-      if (!emoji) {
-        return match;
+    const replaced = m.content.replaceAll(
+      /\{([A-Za-z0-9_]+)\}/g,
+      (match, p1) => {
+        const emoji = this.getSimpleEmoji(p1);
+        if (!emoji) {
+          return match;
+        }
+        return emoji?.toString();
       }
-      return emoji?.toString();
-    });
+    );
     return replaced !== m.content ? replaced : undefined;
   }
 
@@ -85,13 +92,18 @@ class Freemotes {
       return;
     }
 
-    const perms = m.guild?.me?.permissionsIn(m.channel as GuildChannelResolvable);
+    const perms = m.guild?.me?.permissionsIn(
+      m.channel as GuildChannelResolvable
+    );
     if (!perms?.has('MANAGE_MESSAGES') || !perms?.has('MANAGE_WEBHOOKS')) {
       return;
     }
 
-    const webhook = await findOrCreateWebhook(client, m.channel as BaseGuildTextChannel);
-    const replaced = await this.trySubstitute(m) ?? '';
+    const webhook = await findOrCreateWebhook(
+      client,
+      m.channel as BaseGuildTextChannel
+    );
+    const replaced = (await this.trySubstitute(m)) ?? '';
     if (replaced === '') {
       return;
     }

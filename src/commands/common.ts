@@ -5,9 +5,7 @@ import { Discord, Slash } from 'discordx';
 @Discord()
 class Ping {
   @Slash('ping')
-  async ping(
-    interaction: CommandInteraction,
-  ) {
+  async ping(interaction: CommandInteraction) {
     /* eslint-enable */
     interaction.reply('pong');
   }
