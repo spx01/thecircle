@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { exit } from 'process';
+import { setTimeout } from 'timers/promises';
 import { Client } from 'discordx';
 import { importx, dirname } from '@discordx/importer';
 import { Intents, Interaction, Options } from 'discord.js';
@@ -69,6 +70,7 @@ client.once('ready', async () => {
     `Ready as ${client.user?.username}#${client.user?.discriminator}`,
   );
 
+  await setTimeout(1000);
   await freemotes.setup();
   await inviteSpy.setup();
 });
