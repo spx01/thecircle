@@ -41,11 +41,15 @@ class Freemotes {
     this.cachedEmojis.delete(guild.id);
   }
 
-  public getSimpleEmoji(name: string): SimpleEmoji | undefined {
+  public getSimpleEmoji(name: string, findIdx = 0): SimpleEmoji | undefined {
+    let idx = 0;
     for (const emojis of this.cachedEmojis.values()) {
       for (const emoji of emojis.values()) {
         if (emoji.name === name) {
-          return emoji;
+          if (idx === findIdx) {
+            return emoji;
+          }
+          idx += 1;
         }
       }
     }
@@ -71,14 +75,23 @@ class Freemotes {
     if (m.content.includes('`')) {
       return undefined;
     }
-    const replaced = m.content.replaceAll(/\{([\w]+)\}/g, (match, p1) => {
-      const emoji = this.getSimpleEmoji(p1);
-      if (!emoji) {
-        return match;
-      }
-      return emoji?.toString();
-    });
-    return replaced !== m.content ? replaced : undefined;
+    let changed = false;
+    const replaced = m.content.replaceAll(
+      /\{([\w]+)(?:\[(\d+)\])?\}/g,
+      (match, p1, p2) => {
+        const idx = parseInt(p2, 10);
+        const emoji = this.getSimpleEmoji(
+          p1,
+          Number.isNaN(idx) ? undefined : idx,
+        );
+        if (!emoji) {
+          return match;
+        }
+        changed = true;
+        return emoji?.toString();
+      },
+    );
+    return changed ? replaced : undefined;
   }
 
   public async handleMessage(m: Message) {
