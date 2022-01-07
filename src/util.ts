@@ -1,5 +1,6 @@
-import { BaseGuildTextChannel, Webhook } from 'discord.js';
+import { BaseGuildTextChannel, Webhook, MessageAttachment } from 'discord.js';
 import { Client } from 'discordx';
+import fetch from 'node-fetch';
 
 const webhookName = 'thecircle-channel-hook';
 
@@ -12,4 +13,10 @@ async function findOrCreateWebhook(
   return webhook ?? channel.createWebhook(webhookName);
 }
 
-export default findOrCreateWebhook;
+async function readAttachmentFile(
+  attachment: MessageAttachment,
+): Promise<ArrayBuffer> {
+  return fetch(attachment.url).then((r) => r.arrayBuffer());
+}
+
+export { findOrCreateWebhook, readAttachmentFile };

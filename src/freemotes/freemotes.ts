@@ -6,7 +6,7 @@ import {
   Guild,
 } from 'discord.js';
 import { client } from '../main.js';
-import findOrCreateWebhook from '../util.js';
+import { findOrCreateWebhook, readAttachmentFile } from '../util.js';
 
 class SimpleEmoji {
   public static fromEmoji(emoji: Emoji): SimpleEmoji {
@@ -105,12 +105,22 @@ class Freemotes {
       return;
     }
 
-    await m.delete();
-    await webhook.send({
-      username: m.member?.displayName,
-      avatarURL: m.author.avatarURL() ?? undefined,
-      content: replaced,
-    });
+    await webhook
+      .send({
+        username: m.member?.displayName,
+        avatarURL: m.author.avatarURL() ?? undefined,
+        content: replaced,
+        files: await Promise.all(
+          m.attachments.map(async (attachment) => ({
+            attachment: attachment.url,
+            name: attachment.name ?? 'unknown',
+            file: (await readAttachmentFile(attachment)) as Buffer,
+          })),
+        ),
+      })
+      .then(async () => {
+        await m.delete();
+      });
   }
 }
 
