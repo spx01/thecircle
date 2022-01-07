@@ -79,7 +79,7 @@ class Freemotes {
           return match;
         }
         return emoji?.toString();
-      }
+      },
     );
     return replaced !== m.content ? replaced : undefined;
   }
@@ -93,7 +93,7 @@ class Freemotes {
     }
 
     const perms = m.guild?.me?.permissionsIn(
-      m.channel as GuildChannelResolvable
+      m.channel as GuildChannelResolvable,
     );
     if (!perms?.has('MANAGE_MESSAGES') || !perms?.has('MANAGE_WEBHOOKS')) {
       return;
@@ -101,7 +101,7 @@ class Freemotes {
 
     const webhook = await findOrCreateWebhook(
       client,
-      m.channel as BaseGuildTextChannel
+      m.channel as BaseGuildTextChannel,
     );
     const replaced = (await this.trySubstitute(m)) ?? '';
     if (replaced === '') {
