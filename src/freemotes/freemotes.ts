@@ -29,15 +29,21 @@ class Freemotes {
     this.cachedEmojis = new Map();
   }
 
+  public async setup() {
+    client.guilds.cache.forEach(async (guild) => {
+      await this.updateEmojis(guild);
+    });
+  }
+
   public async updateEmojis(guild: Guild) {
     this.cachedEmojis.set(guild.id, []);
     const emojis = await guild.emojis.fetch();
-    emojis.forEach((emoji) => {
+    emojis.forEach(async (emoji) => {
       this.cachedEmojis.get(guild.id)?.push(SimpleEmoji.fromEmoji(emoji));
     });
   }
 
-  public async deleteFromGuild(guild: Guild) {
+  public deleteFromGuild(guild: Guild) {
     this.cachedEmojis.delete(guild.id);
   }
 
@@ -71,12 +77,12 @@ class Freemotes {
     return result;
   }
 
-  public async trySubstitute(m: Message): Promise<string | undefined> {
-    if (m.content.includes('`')) {
+  public async trySubstitute(msg: Message): Promise<string | undefined> {
+    if (msg.content.includes('`')) {
       return undefined;
     }
     let changed = false;
-    const replaced = m.content.replaceAll(
+    const replaced = msg.content.replaceAll(
       /\{([\w]+)(?:~(\d+))?\}/g,
       (match, p1, p2) => {
         const idx = parseInt(p2, 10);
@@ -94,16 +100,16 @@ class Freemotes {
     return changed ? replaced : undefined;
   }
 
-  public async handleMessage(m: Message) {
-    if ((m.channel as BaseGuildTextChannel).fetchWebhooks === undefined) {
+  public async handleMessage(msg: Message) {
+    if ((msg.channel as BaseGuildTextChannel).fetchWebhooks === undefined) {
       return;
     }
-    if (m.author.bot) {
+    if (msg.author.bot) {
       return;
     }
 
-    const perms = m.guild?.me?.permissionsIn(
-      m.channel as GuildChannelResolvable,
+    const perms = msg.guild?.me?.permissionsIn(
+      msg.channel as GuildChannelResolvable,
     );
     if (!perms?.has('MANAGE_MESSAGES') || !perms?.has('MANAGE_WEBHOOKS')) {
       return;
@@ -111,20 +117,20 @@ class Freemotes {
 
     const webhook = await findOrCreateWebhook(
       client,
-      m.channel as BaseGuildTextChannel,
+      msg.channel as BaseGuildTextChannel,
     );
-    const replaced = (await this.trySubstitute(m)) ?? '';
+    const replaced = (await this.trySubstitute(msg)) ?? '';
     if (replaced === '') {
       return;
     }
 
     await webhook
       .send({
-        username: m.member?.displayName,
-        avatarURL: m.author.avatarURL() ?? undefined,
+        username: msg.member?.displayName,
+        avatarURL: msg.author.avatarURL() ?? undefined,
         content: replaced,
         files: await Promise.all(
-          m.attachments.map(async (attachment) => ({
+          msg.attachments.map(async (attachment) => ({
             attachment: attachment.url,
             name: attachment.name ?? 'unknown',
             file: (await readAttachmentFile(attachment)) as Buffer,
@@ -132,7 +138,7 @@ class Freemotes {
         ),
       })
       .then(async () => {
-        await m.delete();
+        await msg.delete();
       });
   }
 }

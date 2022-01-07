@@ -8,6 +8,7 @@ export abstract class AppDiscord {
   async guildCreate([guild]: ArgsOf<'guildCreate'>, client: Client) {
     /* eslint-enable */
     await freemotes.updateEmojis(guild);
+    await inviteSpy.updateInvites(guild);
   }
 
   /* eslint-disable */
@@ -39,6 +40,7 @@ export abstract class AppDiscord {
   async guildDelete([guild]: ArgsOf<'guildDelete'>, client: Client) {
     /* eslint-disable */
     freemotes.deleteFromGuild(guild);
+    inviteSpy.deleteFromGuild(guild);
   }
 
   /* eslint-disable */
