@@ -1,4 +1,4 @@
-import { Guild, GuildMember } from 'discord.js';
+import { Guild, GuildMember, PartialGuildMember } from 'discord.js';
 import { client } from '../main.js';
 
 class InviteSpy {
@@ -44,6 +44,16 @@ class InviteSpy {
       msg = `${msg} invited by ${inviter?.username}#${inviter?.discriminator}.`;
     }
     await channel.send(msg);
+  }
+
+  public async handleMemberRemoved(member: PartialGuildMember | GuildMember) {
+    const channel = member.guild.systemChannel;
+    if (!channel) {
+      return;
+    }
+    await channel.send(
+      `${member.user.username}#${member.user.discriminator} left.`,
+    );
   }
 }
 

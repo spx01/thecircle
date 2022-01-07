@@ -56,4 +56,14 @@ export abstract class AppDiscord {
     /* eslint-enable */
     inviteSpy.handleNewMember(member);
   }
+
+  /* eslint-disable */
+  @On('guildMemberRemove')
+  async guildMemberRemove(
+    [member]: ArgsOf<'guildMemberRemove'>,
+    client: Client,
+  ) {
+    /* eslint-enable */
+    await inviteSpy.handleMemberRemoved(member);
+  }
 }
