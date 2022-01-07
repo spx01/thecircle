@@ -71,16 +71,13 @@ class Freemotes {
     if (m.content.includes('`')) {
       return undefined;
     }
-    const replaced = m.content.replaceAll(
-      /\{([A-Za-z0-9_]+)\}/g,
-      (match, p1) => {
-        const emoji = this.getSimpleEmoji(p1);
-        if (!emoji) {
-          return match;
-        }
-        return emoji?.toString();
-      },
-    );
+    const replaced = m.content.replaceAll(/\{([\w]+)\}/g, (match, p1) => {
+      const emoji = this.getSimpleEmoji(p1);
+      if (!emoji) {
+        return match;
+      }
+      return emoji?.toString();
+    });
     return replaced !== m.content ? replaced : undefined;
   }
 
