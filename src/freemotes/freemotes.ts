@@ -77,7 +77,7 @@ class Freemotes {
     }
     let changed = false;
     const replaced = m.content.replaceAll(
-      /\{([\w]+)(?:\[(\d+)\])?\}/g,
+      /\{([\w]+)(?:~(\d+))?\}/g,
       (match, p1, p2) => {
         const idx = parseInt(p2, 10);
         const emoji = this.getSimpleEmoji(
