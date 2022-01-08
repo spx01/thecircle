@@ -36,9 +36,9 @@ const client = new Client({
     : [(client) => client.guilds.cache.map((guild) => guild.id)],
   makeCache: Options.cacheWithLimits({
     ApplicationCommandManager: 0,
-    BaseGuildEmojiManager: 0,
+    BaseGuildEmojiManager: 10,
     GuildBanManager: 0,
-    GuildEmojiManager: 0,
+    GuildEmojiManager: 10,
     GuildInviteManager: 0,
     GuildMemberManager: 200,
     GuildScheduledEventManager: 0,
