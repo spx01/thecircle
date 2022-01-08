@@ -38,7 +38,7 @@ class Freemotes {
   public async updateEmojis(guild: Guild) {
     this.cachedEmojis.set(guild.id, []);
     const emojis = await guild.emojis.fetch();
-    emojis.forEach(async (emoji) => {
+    emojis.forEach((emoji) => {
       this.cachedEmojis.get(guild.id)?.push(SimpleEmoji.fromEmoji(emoji));
     });
   }
