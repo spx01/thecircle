@@ -9,7 +9,7 @@ async function findOrCreateWebhook(
   channel: BaseGuildTextChannel,
 ): Promise<Webhook> {
   const webhooks = await channel.fetchWebhooks();
-  const webhook = webhooks.find((o) => o.owner === client.user);
+  const webhook = webhooks.find((o) => o.owner?.id === client.user?.id);
   return webhook ?? channel.createWebhook(webhookName);
 }
 
